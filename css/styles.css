@@ -1,0 +1,515 @@
+:root{
+  --marcus-navy:#1e3a8a;--marcus-blue:#3b82f6;--marcus-gray-50:#f8fafc;--marcus-white:#ffffff;--marcus-text:#1e293b;--marcus-muted:#64748b;--marcus-border:#e2e8f0
+}
+*{box-sizing:border-box}
+body{color:var(--marcus-text)}
+
+/* Responsive Container System */
+.app-container{max-width:28rem;margin:0 auto;transition:all .3s ease}
+
+/* Card Grid System */
+.goal-grid{display:grid;gap:1rem;transition:all .3s ease}
+
+/* Dashboard Goal Cards - Full Width */
+.dashboard-goal-card{width:100%;margin-bottom:1rem}
+
+/* Responsive Breakpoints */
+@media (min-width:768px){
+  .app-container{max-width:32rem}
+  .goal-grid{grid-template-columns:repeat(2,1fr);gap:1.25rem}
+}
+
+@media (min-width:1024px){
+  .app-container{max-width:48rem}
+  .goal-grid{grid-template-columns:repeat(3,1fr);gap:1.5rem}
+  
+  /* Goals page full-width expansion */
+  .goals-full-width{max-width:none;padding-left:2rem;padding-right:2rem}
+  .goals-full-width .goal-grid{grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem}
+}
+
+@media (min-width:1440px){
+  .app-container{max-width:64rem}
+  .goal-grid{grid-template-columns:repeat(4,1fr)}
+  .goals-full-width .goal-grid{grid-template-columns:repeat(auto-fit,minmax(350px,1fr))}
+}
+/* Professional Navigation System */
+.nav-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:2px;
+  padding:12px 8px;
+  color:#64748b;
+  text-decoration:none;
+  transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  position:relative;
+  border-radius:8px;
+  margin:4px;
+}
+
+.nav-item span{
+  font-size:20px;
+  margin-bottom:2px;
+  opacity:0.7;
+  transition:all .3s ease;
+}
+
+.nav-icon{
+  font-size:18px;
+  font-weight:normal;
+  display:inline-block;
+  transform:scale(1);
+  transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter:grayscale(1);
+  opacity:0.7;
+}
+
+.nav-icon-img{
+  width:20px;
+  height:20px;
+  display:inline-block;
+  transform:scale(1);
+  transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter:brightness(0.5) contrast(1.2);
+  opacity:0.7;
+}
+
+.nav-item small{
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  opacity:0.8;
+}
+
+.nav-item.active{
+  color:#1e3a8a;
+  background:linear-gradient(135deg, #f8fafc, #f1f5f9);
+  box-shadow:0 2px 8px rgba(30, 58, 138, 0.1);
+}
+
+.nav-item.active span{
+  opacity:1;
+  color:#1e3a8a;
+}
+
+.nav-item.active .nav-icon{
+  transform:scale(1.1);
+  color:#1e3a8a;
+  opacity:1;
+  filter:grayscale(0);
+}
+
+.nav-item.active .nav-icon-img{
+  transform:scale(1.1);
+  opacity:1;
+  filter:brightness(1) contrast(1.5) saturate(1.2);
+}
+
+.nav-item.active small{
+  opacity:1;
+  color:#1e3a8a;
+}
+
+.nav-item:hover{
+  color:#1e40af;
+  background:rgba(30, 58, 138, 0.05);
+  transform:translateY(-1px);
+}
+
+.nav-item:hover span{
+  opacity:0.9;
+}
+
+.nav-item:hover .nav-icon{
+  transform:scale(1.05);
+  opacity:0.9;
+  filter:grayscale(0.3);
+}
+
+.nav-item:hover .nav-icon-img{
+  transform:scale(1.05);
+  opacity:0.9;
+  filter:brightness(0.8) contrast(1.3) saturate(1.1);
+}
+
+/* Professional Bottom Navigation */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#ffffff;
+  border-top:1px solid #e2e8f0;
+  backdrop-filter:blur(10px);
+  z-index:50;
+  box-shadow:0 -2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.bottom-nav .app-container{
+  max-width:none;
+  padding:0;
+}
+
+.bottom-nav .grid{
+  padding:0 8px;
+}
+.btn-primary{background:var(--marcus-navy);color:#fff;padding:.75rem 1rem;border-radius:.5rem;transition:background .2s}
+.btn-primary:hover{background:#1e40af}
+.btn-secondary{background:#eef2ff;color:#1e3a8a;padding:.75rem 1rem;border-radius:.5rem;transition:all .2s}
+.btn-secondary:hover{background:#ddd6fe}
+.form-error{color:#ef4444;font-size:.875rem;min-height:1rem}
+.share-btn{background:transparent;border:none;color:#64748b;padding:.5rem;border-radius:.375rem;transition:all .2s;cursor:pointer}
+.share-btn:hover{background:#f1f5f9;color:var(--marcus-navy);transform:scale(1.1)}
+/* Enhanced Animations & Transitions */
+.progress-fill{transition:width .8s cubic-bezier(0.4, 0, 0.2, 1)}
+.card-enter{animation:slideInUp .4s cubic-bezier(0.4, 0, 0.2, 1);transition:all .3s ease}
+.card-enter:hover{transform:translateY(-3px) scale(1.01);box-shadow:0 12px 30px rgba(0,0,0,0.15)}
+
+/* Page Transitions */
+.page-content{animation:fadeInUp .5s cubic-bezier(0.4, 0, 0.2, 1)}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* Card Animations */
+@keyframes slideInUp{from{opacity:0;transform:translateY(15px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes bounce{0%,20%,53%,80%,100%{transform:translateY(0)}40%,43%{transform:translateY(-15px)}70%{transform:translateY(-7px)}90%{transform:translateY(-3px)}}
+@keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-5px)}20%,40%,60%,80%{transform:translateX(5px)}}
+@keyframes glow{0%,100%{box-shadow:0 0 5px rgba(59,130,246,0.3)}50%{box-shadow:0 0 20px rgba(59,130,246,0.6),0 0 30px rgba(59,130,246,0.4)}}
+
+/* Interactive States */
+.hover-lift{transition:all .3s cubic-bezier(0.4, 0, 0.2, 1)}
+.hover-lift:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,0.12)}
+.hover-scale{transition:transform .2s ease}
+.hover-scale:hover{transform:scale(1.05)}
+
+/* Button Animations */
+.btn-primary{transition:all .2s ease;position:relative;overflow:hidden}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(30,58,138,0.3)}
+.btn-primary:active{transform:translateY(0);box-shadow:0 2px 8px rgba(30,58,138,0.3)}
+
+/* Progress Bar Enhancements */
+.progress-bar-glow{box-shadow:0 0 10px rgba(59,130,246,0.4)}
+.progress-complete{animation:glow 2s ease-in-out infinite}
+
+/* Achievement Animations */
+.achievement-badge{transition:all .3s ease}
+.achievement-badge.unlocked{animation:bounceIn .6s ease-out}
+.achievement-badge.locked{opacity:0.6;filter:grayscale(1)}
+.achievement-badge:hover{transform:scale(1.1)}
+
+@keyframes bounceIn{0%{opacity:0;transform:scale(0.3)}50%{opacity:1;transform:scale(1.05)}70%{transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
+
+/* Celebration Animations */
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:9999}
+.celebration-overlay{position:fixed;inset:0;background:rgba(59,130,246,0.1);backdrop-filter:blur(2px);z-index:9998;pointer-events:none;animation:celebrationFade 3s ease-out forwards}
+
+@keyframes celebrationFade{0%{opacity:1}70%{opacity:1}100%{opacity:0}}
+
+.goal-complete-animation{animation:goalComplete 1s ease-out}
+@keyframes goalComplete{0%{transform:scale(1)}25%{transform:scale(1.1) rotate(2deg)}50%{transform:scale(1.05) rotate(-1deg)}75%{transform:scale(1.02) rotate(0.5deg)}100%{transform:scale(1) rotate(0deg)}}
+
+/* Loading States */
+.loading-pulse{animation:loadingPulse 1.5s ease-in-out infinite}
+@keyframes loadingPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* Stagger Animation for Lists */
+.stagger-item{animation:staggerIn .4s ease-out both}
+.stagger-item:nth-child(1){animation-delay:0.1s}
+.stagger-item:nth-child(2){animation-delay:0.2s}
+.stagger-item:nth-child(3){animation-delay:0.3s}
+.stagger-item:nth-child(4){animation-delay:0.4s}
+.stagger-item:nth-child(5){animation-delay:0.5s}
+
+@keyframes staggerIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* Dark Theme Support */
+.dark-theme{
+  background: #0f172a;
+  color: #e2e8f0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Background Elements */
+.dark-theme .bg-white{
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #334155 !important;
+}
+
+.dark-theme .bg-gray-50{
+  background: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .bg-blue-50{
+  background: #1e3a8a !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .bg-blue-100{
+  background: #1d4ed8 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .bg-green-100{
+  background: #166534 !important;
+  color: #dcfce7 !important;
+}
+
+.dark-theme .bg-yellow-100{
+  background: #a16207 !important;
+  color: #fef3c7 !important;
+}
+
+.dark-theme .bg-red-100{
+  background: #991b1b !important;
+  color: #fecaca !important;
+}
+
+/* Text Colors */
+.dark-theme .text-gray-900{
+  color: #f1f5f9 !important;
+}
+
+.dark-theme .text-gray-800{
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .text-gray-700{
+  color: #cbd5e1 !important;
+}
+
+.dark-theme .text-gray-600{
+  color: #94a3b8 !important;
+}
+
+.dark-theme .text-gray-500{
+  color: #64748b !important;
+}
+
+.dark-theme .text-blue-900{
+  color: #60a5fa !important;
+}
+
+.dark-theme .text-blue-600{
+  color: #3b82f6 !important;
+}
+
+.dark-theme .text-green-600{
+  color: #22c55e !important;
+}
+
+.dark-theme .text-red-600{
+  color: #ef4444 !important;
+}
+
+.dark-theme .text-yellow-800{
+  color: #eab308 !important;
+}
+
+/* Borders and Inputs */
+.dark-theme .border{
+  border-color: #475569 !important;
+}
+
+.dark-theme input,
+.dark-theme select,
+.dark-theme textarea{
+  background: #334155 !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+.dark-theme input:focus,
+.dark-theme select:focus,
+.dark-theme textarea:focus{
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Buttons */
+.dark-theme .btn-primary{
+  background: #1e40af !important;
+  color: #ffffff !important;
+}
+
+.dark-theme .btn-primary:hover{
+  background: #1d4ed8 !important;
+  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.4) !important;
+}
+
+.dark-theme .btn-secondary{
+  background: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-theme .btn-secondary:hover{
+  background: #475569 !important;
+}
+
+/* Professional Dark Theme Navigation */
+.dark-theme .bottom-nav{
+  background: #0f172a !important;
+  border-color: #1e293b !important;
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-theme .nav-item{
+  color: #64748b !important;
+}
+
+.dark-theme .nav-item span{
+  opacity: 0.6;
+}
+
+.dark-theme .nav-item small{
+  opacity: 0.7;
+}
+
+.dark-theme .nav-item.active{
+  color: #60a5fa !important;
+  background: linear-gradient(135deg, #1e293b, #334155) !important;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.2) !important;
+}
+
+.dark-theme .nav-item.active span{
+  opacity: 1 !important;
+  color: #60a5fa !important;
+}
+
+.dark-theme .nav-item.active .nav-icon{
+  transform: scale(1.1) !important;
+  color: #60a5fa !important;
+  opacity: 1 !important;
+  filter: grayscale(0) !important;
+}
+
+.dark-theme .nav-item.active .nav-icon-img{
+  transform: scale(1.1) !important;
+  opacity: 1 !important;
+  filter: brightness(1.2) contrast(1.3) saturate(1.1) hue-rotate(200deg) !important;
+}
+
+.dark-theme .nav-item.active small{
+  opacity: 1 !important;
+  color: #60a5fa !important;
+}
+
+.dark-theme .nav-item:hover{
+  color: #60a5fa !important;
+  background: rgba(96, 165, 250, 0.1) !important;
+  transform: translateY(-1px);
+}
+
+.dark-theme .nav-item:hover span{
+  opacity: 0.8 !important;
+}
+
+.dark-theme .nav-item:hover .nav-icon{
+  transform: scale(1.05) !important;
+  opacity: 0.8 !important;
+  filter: grayscale(0.3) !important;
+}
+
+.dark-theme .nav-item:hover .nav-icon-img{
+  transform: scale(1.05) !important;
+  opacity: 0.8 !important;
+  filter: brightness(1.1) contrast(1.2) saturate(1.05) hue-rotate(200deg) !important;
+}
+
+/* Header */
+.dark-theme header{
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Progress Bars */
+.dark-theme .progress-fill{
+  background: #3b82f6 !important;
+}
+
+.dark-theme .bg-gray-200{
+  background: #475569 !important;
+}
+
+/* Shadows and Effects */
+.dark-theme .shadow-sm{
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+.dark-theme .hover-lift:hover{
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Achievement Badges */
+.dark-theme .achievement-badge{
+  background: #334155 !important;
+  border: 1px solid #475569 !important;
+}
+
+.dark-theme .achievement-badge.locked{
+  opacity: 0.4;
+  filter: grayscale(1);
+}
+
+/* Special Elements */
+.dark-theme .share-btn:hover{
+  background: #334155 !important;
+  color: #60a5fa !important;
+}
+
+/* Toast Messages */
+.dark-theme .bg-green-500{
+  background: #16a34a !important;
+}
+
+.dark-theme .bg-red-500{
+  background: #dc2626 !important;
+}
+
+.dark-theme .bg-blue-500{
+  background: #2563eb !important;
+}
+
+/* Form Errors */
+.dark-theme .form-error{
+  color: #f87171 !important;
+}
+
+.dark-theme .border-red-500{
+  border-color: #ef4444 !important;
+}
+
+/* Celebration Modal */
+.dark-theme .celebration-overlay{
+  background: rgba(15, 23, 42, 0.8) !important;
+}
+
+/* Dark theme hover effects */
+.dark-theme .hover:bg-gray-100:hover,
+.dark-theme .hover\\:bg-gray-100:hover{
+  background: #475569 !important;
+}
+
+.dark-theme .bg-blue-900{
+  background: #1e40af !important;
+}
+
+.dark-theme .hover\\:bg-blue-800:hover{
+  background: #1d4ed8 !important;
+}
+
+.dark-theme .bg-blue-600{
+  background: #2563eb !important;
+}
+
+.dark-theme .hover\\:bg-blue-700:hover{
+  background: #1d4ed8 !important;
+}
+
+/* Improved readability for dark theme */
+.dark-theme .text-white{
+  color: #ffffff !important;
+}

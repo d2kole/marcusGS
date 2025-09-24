@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marcus Savings Tracker • Friends</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+
+
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="app-container px-4 py-3 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-gray-900">Friends</h1>
+      <div class="flex items-center gap-2">
+        <button id="inviteBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors">Invite</button>
+        <button id="themeToggle" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">☀️</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container px-4 py-6 page-content">
+    <section class="grid grid-cols-3 gap-4 mb-6">
+      <div class="bg-white rounded-lg p-4 shadow-sm text-center hover-lift">
+        <p class="text-sm text-gray-600">Friends</p>
+        <p id="friendsCount" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="bg-white rounded-lg p-4 shadow-sm text-center hover-lift">
+        <p class="text-sm text-gray-600">Active Goals</p>
+        <p id="friendsActive" class="text-2xl font-bold">0</p>
+      </div>
+      <div class="bg-white rounded-lg p-4 shadow-sm text-center hover-lift">
+        <p class="text-sm text-gray-600">Completed</p>
+        <p id="friendsCompleted" class="text-2xl font-bold">0</p>
+      </div>
+    </section>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Your Friends</h2>
+    <section id="friendsList" class="space-y-4" aria-live="polite"></section>
+
+    <section class="bg-blue-50 rounded-xl p-6 mt-6 text-center">
+      <div class="text-4xl mb-2">🤝</div>
+      <h3 class="text-lg font-bold text-gray-900 mb-1">Invite More Friends</h3>
+      <p class="text-gray-600 text-sm mb-4">Share your goals and motivate each other to reach your savings targets together.</p>
+      <div class="flex gap-2">
+        <input id="shareInput" class="flex-1 p-3 border rounded-lg" readonly />
+        <button id="copyShare" class="btn-primary">Copy</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bottom-nav">
+    <div class="grid grid-cols-4">
+      <a class="nav-item" href="index.html">
+        <img src="assets/icons/dashboardicon.png" class="nav-icon-img" alt="Dashboard">
+        <small>Dashboard</small>
+      </a>
+      <a class="nav-item" href="goals.html">
+        <img src="assets/icons/goalsIcon.png" class="nav-icon-img" alt="Goals">
+        <small>Goals</small>
+      </a>
+      <a class="nav-item active" href="friends.html">
+        <span class="nav-icon">👥</span>
+        <small>Friends</small>
+      </a>
+      <a class="nav-item" href="profile.html">
+        <span class="nav-icon">👤</span>
+        <small>Profile</small>
+      </a>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/goals.js"></script>
+  <script src="js/friends.js"></script>
+  <script src="js/celebration.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

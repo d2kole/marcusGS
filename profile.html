@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marcus Savings Tracker • Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+
+
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="app-container px-4 py-3 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-gray-900">Profile</h1>
+      <div class="flex gap-2">
+        <button id="themeToggle" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">☀️</button>
+        <button id="settingsBtn" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">⚙️</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container px-4 py-6 page-content">
+    <section class="bg-white rounded-xl p-6 shadow-sm mb-6 hover-lift">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-2xl">👤</div>
+        <div>
+          <h2 class="text-xl font-bold">Marcus</h2>
+          <p class="text-sm text-gray-600">Member since <span id="memberSince">2025-09-23</span></p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-gray-50 rounded-lg p-3 text-center">
+          <p class="text-2xl font-bold" id="profileTotalSaved">$0</p>
+          <p class="text-xs text-gray-600">Total Saved</p>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-3 text-center">
+          <p class="text-2xl font-bold" id="profileAvgProgress">0%</p>
+          <p class="text-xs text-gray-600">Avg Progress</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-white rounded-xl p-6 shadow-sm mb-6 hover-lift">
+      <h3 class="text-lg font-bold mb-4">Achievements</h3>
+      <div id="achievementsGrid" class="grid grid-cols-3 gap-4"></div>
+    </section>
+
+    <section class="bg-white rounded-xl p-6 shadow-sm hover-lift">
+      <h3 class="text-lg font-bold mb-4">Settings</h3>
+      <form id="settingsForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Theme</label>
+          <select id="themeSelect" class="w-full p-3 border rounded-lg">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
+          <select id="currencySelect" class="w-full p-3 border rounded-lg">
+            <option value="$">$</option>
+            <option value="€">€</option>
+            <option value="£">£</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Date Format</label>
+          <select id="dateFormatSelect" class="w-full p-3 border rounded-lg">
+            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+          </select>
+        </div>
+        <div class="flex gap-2">
+          <button type="submit" class="btn-primary flex-1">Save Settings</button>
+          <button type="button" id="exportData" class="bg-green-600 text-white px-4 py-2 rounded-lg flex-1">Export Data</button>
+        </div>
+        <button type="button" id="clearData" class="bg-red-600 text-white px-4 py-2 rounded-lg w-full mt-2">Clear All Data</button>
+      </form>
+    </section>
+
+    <div class="text-center mt-8 text-sm text-gray-500">Version 1.0.0 • Built with ❤️ for your financial goals</div>
+  </main>
+
+  <footer class="bottom-nav">
+    <div class="grid grid-cols-4">
+        <a class="nav-item" href="index.html">
+          <img src="assets/icons/dashboardicon.png" class="nav-icon-img" alt="Dashboard">
+          <small>Dashboard</small>
+        </a>
+        <a class="nav-item" href="goals.html">
+          <img src="assets/icons/goalsIcon.png" class="nav-icon-img" alt="Goals">
+          <small>Goals</small>
+        </a>
+      <a class="nav-item" href="friends.html">
+        <span class="nav-icon">👥</span>
+        <small>Friends</small>
+      </a>
+      <a class="nav-item active" href="profile.html">
+        <span class="nav-icon">👤</span>
+        <small>Profile</small>
+      </a>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/goals.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/celebration.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

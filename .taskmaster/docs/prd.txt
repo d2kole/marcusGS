@@ -1,0 +1,39 @@
+Marcus Savings Tracker - Optimized PRD
+
+Overview:
+- Duration: 3-4 hours
+- Tech: HTML, CSS (Tailwind), Vanilla JS, LocalStorage
+- Pages: index.html (Dashboard), goals.html (Goals), friends.html (Friends), profile.html (Profile)
+- Max 4 simultaneous goals; categories required; deadlines required
+- Progress: manual input only, positive amounts; history tracked
+- Visual: Marcus blue aesthetic, smooth animations, celebration at 100%
+- Social: Hardcoded friends data + share progress text
+- Storage: Separate localStorage keys per feature
+- Validation: Custom JS, real-time, prevent duplicate names
+- Profile includes settings/preferences
+
+LocalStorage Keys:
+- marcus_goals
+- marcus_progress
+- marcus_settings
+- marcus_achievements
+- marcus_stats
+
+Goal Object:
+{id, name, category, targetAmount, currentAmount, endDate, createdAt, progressHistory[], isCompleted, completedAt}
+
+MVP Must-Haves:
+1) Create/delete goals with validation (limit 4, unique names)
+2) Add and track progress with history and percentage
+3) Dashboard summary and per-goal progress bars
+4) Four functional pages with bottom navigation
+5) Friends page with hardcoded data and share text
+6) Profile page with stats and settings saved to localStorage
+7) Smooth animations + 100% celebration
+8) Mobile-first responsive UI
+9) Past-deadline goals indicated as overdue
+
+Non-goals:
+- No authentication
+- No data import/export
+- No color-changing progress bars

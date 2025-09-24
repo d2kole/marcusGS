@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Marcus Savings Tracker • Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-gray-50 min-h-screen pb-20">
+
+
+  <header class="bg-white shadow-sm sticky top-0 z-10">
+    <div class="app-container px-4 py-3 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-blue-900">Marcus</h1>
+      <div class="flex items-center gap-2">
+        <nav class="hidden sm:block text-sm text-gray-600">Dashboard</nav>
+        <button id="themeToggle" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">☀️</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container px-4 py-6 page-content" id="dashboard-root">
+    <h2 class="text-2xl font-bold text-gray-900 mb-6">My Savings Goals</h2>
+    <section id="summary" class="bg-white rounded-xl p-6 shadow-sm mb-6 hover-lift">
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-gray-500 text-sm">Total Saved</p>
+          <p class="text-3xl font-bold">$<span id="totalSaved">0</span></p>
+        </div>
+        <div>
+          <p class="text-gray-500 text-sm">Total Target</p>
+          <p class="text-3xl font-bold">$<span id="totalTarget">0</span></p>
+        </div>
+      </div>
+      <div class="mt-4">
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-gray-600">Overall Progress</span>
+          <span class="text-blue-600 font-medium"><span id="overallPercent">0</span>%</span>
+        </div>
+        <div class="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
+          <div id="overallBar" class="h-3 bg-blue-600 rounded-full transition-all duration-500" style="width:0%"></div>
+        </div>
+      </div>
+    </section>
+
+    <a href="goals.html" class="block w-full text-center bg-blue-900 hover:bg-blue-800 text-white font-medium py-3 rounded-lg mb-6 transition-all duration-200 hover-lift">+ Create New Goal</a>
+
+    <section id="goalsContainer" class="space-y-4" aria-live="polite"></section>
+
+    <div id="emptyState" class="hidden text-center py-12">
+      <div class="text-6xl mb-2">🎯</div>
+      <p class="font-medium text-gray-800 mb-1">No goals yet</p>
+      <p class="text-gray-600 text-sm">Create your first savings goal to get started.</p>
+    </div>
+  </main>
+
+  <footer class="bottom-nav">
+    <div class="grid grid-cols-4">
+      <a class="nav-item active" href="index.html">
+        <img src="assets/icons/dashboardicon.png" class="nav-icon-img" alt="Dashboard">
+        <small>Dashboard</small>
+      </a>
+      <a class="nav-item" href="goals.html">
+        <img src="assets/icons/goalsIcon.png" class="nav-icon-img" alt="Goals">
+        <small>Goals</small>
+      </a>
+      <a class="nav-item" href="friends.html">
+        <span class="nav-icon">👥</span>
+        <small>Friends</small>
+      </a>
+      <a class="nav-item" href="profile.html">
+        <span class="nav-icon">👤</span>
+        <small>Profile</small>
+      </a>
+    </div>
+  </footer>
+
+  <script src="js/utils.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/goals.js"></script>
+  <script src="js/celebration.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
