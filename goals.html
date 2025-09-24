@@ -93,11 +93,55 @@
       </form>
     </section>
 
+    <button onclick="createExamples()" class="btn btn-secondary mb-4" style="background: #6B46C1;">Create Example Goals (Temporary)</button>
+
     <h2 class="mb-4">Active Goals</h2>
     <section id="activeGoals" class="card-grid"></section>
 
     <h2 class="mb-4" style="margin-top: 2rem;">Completed</h2>
     <section id="completedGoals" class="card-grid"></section>
+
+    <script>
+    function createExamples() {
+      // Clear existing data
+      localStorage.removeItem('marcus_goals');
+      
+      // Create active goal
+      const activeGoal = {
+        id: 'example_active_' + Date.now(),
+        name: 'Emergency Fund',
+        category: 'Emergency Savings',
+        targetAmount: 5000,
+        currentAmount: 1200,
+        endDate: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        createdAt: new Date().toISOString(),
+        progressHistory: [],
+        isCompleted: false,
+        completedAt: null
+      };
+      
+      // Create completed goal
+      const completedGoal = {
+        id: 'example_completed_' + Date.now(),
+        name: 'New Laptop',
+        category: 'Major Purchase',
+        targetAmount: 1500,
+        currentAmount: 1500,
+        endDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        createdAt: new Date().toISOString(),
+        progressHistory: [],
+        isCompleted: true,
+        completedAt: new Date().toISOString()
+      };
+      
+      // Save goals
+      const goals = [activeGoal, completedGoal];
+      localStorage.setItem('marcus_goals', JSON.stringify(goals));
+      
+      // Reload page
+      window.location.reload();
+    }
+    </script>
   </main>
 
   <footer class="bottom-nav">

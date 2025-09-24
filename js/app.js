@@ -12,6 +12,8 @@
 
   function createExampleGoalIfNeeded(){
     const existingGoals = MarcusStorage.getGoals();
+    
+    // Only create examples if no goals exist
     if(existingGoals.length === 0){
       // Create an active example goal
       const activeEndDate = new Date();
@@ -71,8 +73,15 @@
         completedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString() // Completed 20 days ago
       };
       
+      // Force clear localStorage and add the goals
+      localStorage.removeItem('marcus_goals');
       MarcusStorage.upsertGoal(activeGoal);
       MarcusStorage.upsertGoal(completedGoal);
+      
+      // Force a page render after creating goals
+      if(currentPage === 'goals') {
+        setTimeout(() => renderGoalsPage(), 100);
+      }
     }
   }
 
