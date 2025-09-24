@@ -25,15 +25,9 @@
     };
   }
 
+  // Toast functionality moved to MarcusComponents
   function showToast(message, type = 'info'){
-    // Simple toast implementation
-    const toast = document.createElement('div');
-    toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg text-white z-50 ${
-      type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-green-500' : 'bg-blue-500'
-    }`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    return MarcusComponents.showToast(message, type);
   }
 
   function formatDate(dateStr, format = 'MMM DD, YYYY'){
@@ -76,44 +70,27 @@
     const newTheme = currentTheme === 'light' ? 'dark' : 'light';
     applyTheme(newTheme);
     showToast(`Switched to ${newTheme} theme`, 'info');
-  }  function validateGoalName(name, existingGoals = []){
-    const errors = [];
-    if(!name || name.trim().length < 3) errors.push('Goal name must be at least 3 characters');
-    if(name && name.trim().length > 30) errors.push('Goal name cannot exceed 30 characters');
-    if(name && !/^[a-zA-Z0-9\s]+$/.test(name.trim())) errors.push('Goal name can only contain letters, numbers, and spaces');
-    
-    const trimmed = name ? name.trim().toLowerCase() : '';
-    if(trimmed && existingGoals.some(g => g.name.toLowerCase() === trimmed)){
-      errors.push('Goal name already exists');
-    }
-    return errors;
+  }  // Legacy validation functions - DEPRECATED
+  // Use MarcusValidators instead for all new code
+  function validateGoalName(name, existingGoals = []){
+    console.warn('validateGoalName is deprecated. Use MarcusValidators.validateGoalName instead.');
+    return MarcusValidators.validateGoalName(name) ? [MarcusValidators.validateGoalName(name)] : [];
   }
 
   function validateTargetAmount(amount){
-    const errors = [];
-    const num = Number(amount);
-    if(!amount || isNaN(num) || num <= 0) errors.push('Target amount must be a positive number');
-    if(num > 1000000) errors.push('Target amount cannot exceed $1,000,000');
-    return errors;
+    console.warn('validateTargetAmount is deprecated. Use MarcusValidators.validateTargetAmount instead.');
+    return MarcusValidators.validateTargetAmount(amount) ? [MarcusValidators.validateTargetAmount(amount)] : [];
   }
 
   function validateTargetDate(dateStr){
-    const errors = [];
-    if(!dateStr) errors.push('Target date is required');
-    const date = new Date(dateStr);
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    if(date <= today) errors.push('Target date must be in the future');
-    
-    const oneYearFromNow = new Date();
-    oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
-    if(date > oneYearFromNow) errors.push('Target date cannot be more than 1 year from now');
-    return errors;
+    console.warn('validateTargetDate is deprecated. Use MarcusValidators.validateTargetDate instead.');
+    return MarcusValidators.validateTargetDate(dateStr) ? [MarcusValidators.validateTargetDate(dateStr)] : [];
   }
 
   window.MarcusUtils = {
     formatCurrency, calculateDaysLeft, calculatePercentage, debounce, showToast, formatDate,
     getThemePreference, setThemePreference, applyTheme, toggleTheme,
+    // Deprecated validation functions - use MarcusValidators instead
     validateGoalName, validateTargetAmount, validateTargetDate
   };
 })();

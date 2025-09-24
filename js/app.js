@@ -349,60 +349,104 @@
   }
 
   function initProfilePage(){
-    // Initialize profile
-    MarcusProfile.initializeProfile();
+    // Initialize profile if MarcusProfile exists
+    if (typeof MarcusProfile !== 'undefined') {
+      MarcusProfile.initializeProfile();
+    }
     
-    // Set up event listeners
-    const settingsForm = document.getElementById('settingsForm');
+    // Set up event listeners for existing elements
     const themeToggle = document.getElementById('themeToggle');
     const clearDataBtn = document.getElementById('clearData');
     const exportDataBtn = document.getElementById('exportData');
     
-    settingsForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const formData = new FormData(settingsForm);
-      const settings = {
-        theme: document.getElementById('themeSelect').value,
-        currency: document.getElementById('currencySelect').value,
-        dateFormat: document.getElementById('dateFormatSelect').value
-      };
-      
-      MarcusProfile.updateUserSettings(settings);
-      MarcusUtils.showToast('Settings saved successfully!', 'success');
-    });
+    if (themeToggle) {
+      themeToggle.addEventListener('click', () => {
+        MarcusUtils.toggleTheme();
+      });
+    }
     
-    themeToggle.addEventListener('click', () => {
-      MarcusUtils.toggleTheme();
-    });
+    if (clearDataBtn) {
+      clearDataBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+          try {
+            // Clear all storage
+            localStorage.clear();
+            MarcusUtils.showToast('All data has been cleared', 'success');
+            // Reload page after a brief delay
+            setTimeout(() => window.location.reload(), 1000);
+          } catch (error) {
+            MarcusUtils.showToast('Error clearing data: ' + error.message, 'error');
+          }
+        }
+      });
+    }
     
-    clearDataBtn.addEventListener('click', () => {
-      MarcusProfile.clearAllUserData();
-    });
-    
-    exportDataBtn.addEventListener('click', () => {
-      MarcusProfile.exportUserData();
-    });
+    if (exportDataBtn) {
+      exportDataBtn.addEventListener('click', () => {
+        try {
+          const data = {
+            goals: MarcusStorage.getGoals(),
+            progress: MarcusStorage.getProgress(),
+            settings: MarcusStorage.getSettings(),
+            profile: MarcusStorage.read('marcus_profile', {})
+          };
+          
+          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `marcus-savings-backup-${new Date().toISOString().split('T')[0]}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          
+          MarcusUtils.showToast('Data exported successfully!', 'success');
+        } catch (error) {
+          MarcusUtils.showToast('Error exporting data: ' + error.message, 'error');
+        }
+      });
+    }
     
     renderProfilePage();
   }
 
   function renderProfilePage(){
-    const stats = MarcusProfile.getProfileStats();
+    // Use MarcusProfile if available, otherwise use fallback data
+    let stats;
+    if (typeof MarcusProfile !== 'undefined') {
+      stats = MarcusProfile.getProfileStats();
+    } else {
+      // Fallback stats using goal data
+      const goalStats = MarcusGoals.getGoalStats();
+      stats = {
+        totalSaved: goalStats.totalSaved,
+        avgProgress: goalStats.overallProgress,
+        profile: {
+          joinDate: '2025-09-23',
+          preferences: { theme: 'light', currency: '$', dateFormat: 'MM/DD/YYYY' }
+        }
+      };
+    }
     
-    // Update profile stats
-    document.getElementById('profileTotalSaved').textContent = MarcusUtils.formatCurrency(stats.totalSaved);
-    document.getElementById('profileAvgProgress').textContent = stats.avgProgress + '%';
-    document.getElementById('memberSince').textContent = MarcusUtils.formatDate(stats.profile.joinDate);
+    // Update profile stats (safely)
+    const totalSavedEl = document.getElementById('profileTotalSaved');
+    const avgProgressEl = document.getElementById('profileAvgProgress');
+    const memberSinceEl = document.getElementById('memberSince');
     
-    // Render achievements
+    if (totalSavedEl) totalSavedEl.textContent = MarcusUtils.formatCurrency(stats.totalSaved);
+    if (avgProgressEl) avgProgressEl.textContent = stats.avgProgress + '%';
+    if (memberSinceEl) memberSinceEl.textContent = MarcusUtils.formatDate(stats.profile.joinDate);
+    
+    // Render achievements if grid exists
     const achievementsGrid = document.getElementById('achievementsGrid');
-    achievementsGrid.innerHTML = MarcusProfile.renderAchievementsGrid();
-    
-    // Set current settings values
-    const profile = stats.profile;
-    document.getElementById('themeSelect').value = profile.preferences.theme;
-    document.getElementById('currencySelect').value = profile.preferences.currency;
-    document.getElementById('dateFormatSelect').value = profile.preferences.dateFormat;
+    if (achievementsGrid) {
+      if (typeof MarcusProfile !== 'undefined') {
+        achievementsGrid.innerHTML = MarcusProfile.renderAchievementsGrid();
+      } else {
+        achievementsGrid.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No achievements yet</p>';
+      }
+    }
   }
 
   function initThemeSystem(){

@@ -1,24 +1,24 @@
-// Goal management for Marcus Savings
-(function(){
-  const MAX_GOALS = 4;
+// Clean Goal Management for Marcus Savings Tracker
+(function() {
 
-  function createGoal(goalData){
-    const goals = MarcusStorage.getGoals();
+  // Create a new goal with validation
+  function createGoal(formData) {
+    const existingGoals = MarcusStorage.getGoals();
     
-    // Validate goal limit
-    const activeGoals = goals.filter(g => !g.isCompleted);
-    if(activeGoals.length >= MAX_GOALS){
-      throw new Error(`Maximum of ${MAX_GOALS} active goals allowed`);
+    // Use consolidated validation
+    const validation = MarcusValidators.validateGoal(formData, existingGoals);
+    if (!validation.isValid) {
+      throw new Error(Object.values(validation.errors)[0]);
     }
 
-    // Create goal object
+    // Create goal object with sanitized data
     const goal = {
-      id: Date.now().toString(),
-      name: goalData.name.trim(),
-      category: goalData.category,
-      targetAmount: Number(goalData.targetAmount),
+      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      name: MarcusValidators.sanitizeText(formData.name.trim()),
+      category: formData.category,
+      targetAmount: Number(formData.targetAmount),
       currentAmount: 0,
-      endDate: goalData.endDate,
+      endDate: formData.endDate,
       createdAt: new Date().toISOString(),
       progressHistory: [],
       isCompleted: false,
@@ -28,15 +28,32 @@
     return MarcusStorage.upsertGoal(goal);
   }
 
-  function addProgressToGoal(goalId, amount){
+  // Add progress to a goal with validation
+  function addProgressToGoal(goalId, amount) {
     const goals = MarcusStorage.getGoals();
     const goal = MarcusStorage.findGoal(goals, goalId);
-    if(!goal) throw new Error('Goal not found');
-    if(goal.isCompleted) throw new Error('Cannot add progress to completed goal');
+    
+    if (!goal) {
+      throw new Error('Goal not found');
+    }
+    
+    if (goal.isCompleted) {
+      throw new Error('Cannot add progress to completed goal');
+    }
+
+    // Validate progress amount
+    const validationError = MarcusValidators.validateProgressAmount(
+      amount, 
+      goal.currentAmount, 
+      goal.targetAmount
+    );
+    
+    if (validationError) {
+      throw new Error(validationError);
+    }
 
     const progressAmount = Number(amount);
-    if(progressAmount <= 0) throw new Error('Progress amount must be positive');
-
+    
     // Add to progress history
     const progressEntry = MarcusStorage.addProgress(goalId, progressAmount);
     
@@ -45,25 +62,31 @@
     goal.progressHistory.push(progressEntry);
     
     // Check completion
-    if(goal.currentAmount >= goal.targetAmount){
+    if (goal.currentAmount >= goal.targetAmount) {
       goal.isCompleted = true;
       goal.completedAt = new Date().toISOString();
     }
 
     MarcusStorage.upsertGoal(goal);
     return goal;
-  }  function deleteGoal(goalId){
+  }
+
+  // Delete a goal
+  function deleteGoal(goalId) {
     MarcusStorage.deleteGoal(goalId);
   }
 
-  function getGoalStats(){
+  // Get comprehensive goal statistics
+  function getGoalStats() {
     const goals = MarcusStorage.getGoals();
     const active = goals.filter(g => !g.isCompleted);
     const completed = goals.filter(g => g.isCompleted);
     
     const totalSaved = goals.reduce((sum, g) => sum + g.currentAmount, 0);
     const totalTarget = active.reduce((sum, g) => sum + g.targetAmount, 0);
-    const overallProgress = totalTarget > 0 ? MarcusUtils.calculatePercentage(totalSaved, totalTarget) : 0;
+    const overallProgress = totalTarget > 0 
+      ? MarcusUtils.calculatePercentage(totalSaved, totalTarget) 
+      : 0;
 
     return {
       active: active.length,
@@ -75,37 +98,56 @@
     };
   }
 
-  function validateGoalForm(formData){
-    const goals = MarcusStorage.getGoals();
-    const errors = {};
-
-    // Validate name
-    const nameErrors = MarcusUtils.validateGoalName(formData.name, goals);
-    if(nameErrors.length) errors.name = nameErrors[0];
-
-    // Validate amount
-    const amountErrors = MarcusUtils.validateTargetAmount(formData.targetAmount);
-    if(amountErrors.length) errors.targetAmount = amountErrors[0];
-
-    // Validate date
-    const dateErrors = MarcusUtils.validateTargetDate(formData.endDate);
-    if(dateErrors.length) errors.endDate = dateErrors[0];
-
-    // Check goal limit
-    const activeGoals = goals.filter(g => !g.isCompleted);
-    if(activeGoals.length >= MAX_GOALS){
-      errors.limit = `Maximum of ${MAX_GOALS} active goals allowed. Complete or delete existing goals first.`;
-    }
-
-    return { isValid: Object.keys(errors).length === 0, errors };
+  // Validate goal form (wrapper for consolidated validation)
+  function validateGoalForm(formData) {
+    const existingGoals = MarcusStorage.getGoals();
+    return MarcusValidators.validateGoal(formData, existingGoals);
   }
 
+  // Get a specific goal by ID
+  function getGoal(goalId) {
+    const goals = MarcusStorage.getGoals();
+    return MarcusStorage.findGoal(goals, goalId);
+  }
+
+  // Update goal (for editing)
+  function updateGoal(goalId, updates) {
+    const goals = MarcusStorage.getGoals();
+    const goal = MarcusStorage.findGoal(goals, goalId);
+    
+    if (!goal) {
+      throw new Error('Goal not found');
+    }
+
+    // Merge updates with existing goal
+    const updatedGoal = { ...goal, ...updates };
+    
+    // Validate if critical fields are being updated
+    if (updates.name || updates.targetAmount || updates.endDate) {
+      const validation = MarcusValidators.validateGoal({
+        name: updatedGoal.name,
+        targetAmount: updatedGoal.targetAmount,
+        endDate: updatedGoal.endDate
+      }, goals.filter(g => g.id !== goalId));
+      
+      if (!validation.isValid) {
+        throw new Error(Object.values(validation.errors)[0]);
+      }
+    }
+
+    return MarcusStorage.upsertGoal(updatedGoal);
+  }
+
+  // Export clean API
   window.MarcusGoals = {
-    MAX_GOALS,
     createGoal,
     addProgressToGoal,
     deleteGoal,
     getGoalStats,
-    validateGoalForm
+    validateGoalForm,
+    getGoal,
+    updateGoal,
+    MAX_GOALS: MarcusValidators.MAX_GOALS
   };
+
 })();
