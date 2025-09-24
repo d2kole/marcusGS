@@ -254,9 +254,10 @@
         </div>
         
         <div class="flex justify-between items-center">
-          <span class="text-sm ${isOverdue ? 'text-red-600 font-medium' : 'text-gray-600'}">
-            📅 ${isOverdue ? 'Overdue' : `${daysLeft} days left`}
-          </span>
+          ${goal.isCompleted 
+            ? `<span class="text-sm text-green-600 font-medium">🎉 Completed ${goal.completedAt ? MarcusUtils.formatDate(goal.completedAt) : ''}</span>`
+            : `<span class="text-sm ${isOverdue ? 'text-red-600 font-medium' : 'text-gray-600'}">📅 ${isOverdue ? 'Overdue' : `${daysLeft} days left`}</span>`
+          }
           ${!goal.isCompleted 
             ? `<button onclick="showAddProgress('${goal.id}')" class="bg-blue-900 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-800 transition-all duration-200 hover:-translate-y-0.5">Add Progress</button>` 
             : '<span class="text-green-600 font-medium flex items-center gap-1"><span class="animate-pulse">✅</span> Completed</span>'
