@@ -10,7 +10,45 @@
     return 'dashboard';
   }
 
+  function createExampleGoalIfNeeded(){
+    const existingGoals = MarcusStorage.getGoals();
+    if(existingGoals.length === 0){
+      // Create an example goal with realistic data
+      const exampleEndDate = new Date();
+      exampleEndDate.setMonth(exampleEndDate.getMonth() + 6); // 6 months from now
+      
+      const exampleGoal = {
+        id: 'example_' + Date.now().toString(),
+        name: 'Emergency Fund',
+        category: 'Emergency Savings',
+        targetAmount: 5000,
+        currentAmount: 1200,
+        endDate: exampleEndDate.toISOString().split('T')[0],
+        createdAt: new Date().toISOString(),
+        progressHistory: [
+          {
+            goalId: 'example_' + Date.now().toString(),
+            amount: 500,
+            date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days ago
+          },
+          {
+            goalId: 'example_' + Date.now().toString(),
+            amount: 700,
+            date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days ago
+          }
+        ],
+        isCompleted: false,
+        completedAt: null
+      };
+      
+      MarcusStorage.upsertGoal(exampleGoal);
+    }
+  }
+
   function initGoalsPage(){
+    // Create example goal if no goals exist
+    createExampleGoalIfNeeded();
+    
     const formSection = document.getElementById('goalFormSection');
     const toggleBtn = document.getElementById('toggleGoalForm');
     const cancelBtn = document.getElementById('cancelCreate');
