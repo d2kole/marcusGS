@@ -13,26 +13,26 @@
   function createExampleGoalIfNeeded(){
     const existingGoals = MarcusStorage.getGoals();
     if(existingGoals.length === 0){
-      // Create an example goal with realistic data
-      const exampleEndDate = new Date();
-      exampleEndDate.setMonth(exampleEndDate.getMonth() + 6); // 6 months from now
+      // Create an active example goal
+      const activeEndDate = new Date();
+      activeEndDate.setMonth(activeEndDate.getMonth() + 6); // 6 months from now
       
-      const exampleGoal = {
-        id: 'example_' + Date.now().toString(),
+      const activeGoal = {
+        id: 'example_active_' + Date.now().toString(),
         name: 'Emergency Fund',
         category: 'Emergency Savings',
         targetAmount: 5000,
         currentAmount: 1200,
-        endDate: exampleEndDate.toISOString().split('T')[0],
-        createdAt: new Date().toISOString(),
+        endDate: activeEndDate.toISOString().split('T')[0],
+        createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString(), // 45 days ago
         progressHistory: [
           {
-            goalId: 'example_' + Date.now().toString(),
+            goalId: 'example_active_' + Date.now().toString(),
             amount: 500,
             date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days ago
           },
           {
-            goalId: 'example_' + Date.now().toString(),
+            goalId: 'example_active_' + Date.now().toString(),
             amount: 700,
             date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days ago
           }
@@ -40,8 +40,39 @@
         isCompleted: false,
         completedAt: null
       };
+
+      // Create a completed example goal
+      const completedGoal = {
+        id: 'example_completed_' + Date.now().toString(),
+        name: 'New Laptop',
+        category: 'Major Purchase',
+        targetAmount: 1500,
+        currentAmount: 1500,
+        endDate: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Was due 2 weeks ago
+        createdAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(), // Created 90 days ago
+        progressHistory: [
+          {
+            goalId: 'example_completed_' + Date.now().toString(),
+            amount: 400,
+            date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString() // 60 days ago
+          },
+          {
+            goalId: 'example_completed_' + Date.now().toString(),
+            amount: 600,
+            date: new Date(Date.now() - 35 * 24 * 60 * 60 * 1000).toISOString() // 35 days ago
+          },
+          {
+            goalId: 'example_completed_' + Date.now().toString(),
+            amount: 500,
+            date: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString() // 20 days ago (completion)
+          }
+        ],
+        isCompleted: true,
+        completedAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString() // Completed 20 days ago
+      };
       
-      MarcusStorage.upsertGoal(exampleGoal);
+      MarcusStorage.upsertGoal(activeGoal);
+      MarcusStorage.upsertGoal(completedGoal);
     }
   }
 
